@@ -1,13 +1,18 @@
 const express =require('express');
 const userRoute=require('./routes/api/user');
+
 const provideRoute=require('./routes/api/provider');
-const app=express();
+
+const CartRoute=require('./routes/api/AddToCartR');
+
+
 app.use(express.json());
 const connectDB=require('./config/connectDB');
 
 //connect databse
 connectDB();
 app.use('/api/users',userRoute);
+app.use('/api/cart',CartRoute);
 
 app.use('/api/Providers',provideRoute);
 // app.use('/api/tasks/:email',userRoute);
