@@ -1,10 +1,13 @@
 const express =require('express');
 const userRoute=require('./routes/api/user');
 
+const storeRoute=require('./routes/api/stores');
+
 const provideRoute=require('./routes/api/provider');
 
 const CartRoute=require('./routes/api/AddToCartR');
 
+const app = express();
 
 app.use(express.json());
 const connectDB=require('./config/connectDB');
@@ -15,6 +18,7 @@ app.use('/api/users',userRoute);
 app.use('/api/cart',CartRoute);
 
 app.use('/api/Providers',provideRoute);
+app.use('/api/stores',storeRoute);
 // app.use('/api/tasks/:email',userRoute);
 // app.use('/api/tasks/delete/:email',userRoute);
 // app.use('/api/tasks/update/:email',userRoute);
