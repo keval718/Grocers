@@ -6,7 +6,7 @@ const {
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-let Cart = require("../../models/OrderM");
+let Cart = require("../../models/OrdersM");
 let Cart1 = require("../../models/AddToCartM");
 const router = express.Router();
 router.get('/',async(req,res)=>{
