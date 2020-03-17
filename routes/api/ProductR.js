@@ -6,7 +6,7 @@ const {
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-let Cart = require("../../models/AddToCartM");
+let Cart = require("../../models/ProductM");
 const router = express.Router();
 router.get('/',async(req,res)=>{
     try{
@@ -27,19 +27,19 @@ router.get('/',async(req,res)=>{
 router.get('/:id',async(req,res)=>{
     try{
    //     const task = tasklist.find(t => t.id == req.params.id);
-        const CartID= await Cart.find(req.params.fk_user_id);
+        const CartID= await Cart.find(req.params.fk_store_id);
         let pro=Array();
         for(i=0;i<CartID.length;i++){
             console.log(CartID[i].pname);
             const re=new Object({
                 pname: CartID[i].pname,
-            quantity: CartID[i].quantity,
+            
             amount: CartID[i].amount
             })
             pro.push(re);
             
          }
-         console.log(pro+",khjvg");
+         console.log(pro.length+",khjvg");
         if(!CartID){
             
         }
@@ -56,7 +56,7 @@ router.get('/:id',async(req,res)=>{
 router.delete('/:id', async(req, res) => {
     try{
         
-        const CartID=await Cart.findById(req.params.fk_user_id);
+        const CartID=await Cart.findById(req.params.id);
         CartID.delete();
        res.json("Deleted");        
 
@@ -82,10 +82,10 @@ async(req, res) => {
       const newCart = new Cart({
         // id: req.body.id,
         pname: req.body.pname,
-        quantity: req.body.quantity,
+        
         amount: req.body.amount,
         fk_store_id: req.body.fk_store_id,
-        fk_user_id: req.body.fk_user_id
+        
         
       });
       const nCart=await newCart.save();
@@ -93,7 +93,7 @@ async(req, res) => {
     console.log(nCart)
       res.send(nCart);
     } catch (err) {
-      res.status(500).send('Server error');
+      res.status(500).send(err);
     }
   });
 
@@ -106,10 +106,10 @@ async(req, res) => {
         
         //   TaskDb.id= req.body.id;
         CartID.pname= req.body.pname;
-        CartID.quantity= req.body.quantity;
+        
         CartID.amount= req.body.amount;
         CartID.fk_store_id= req.body.fk_store_id;
-        CartID.fk_user_id= req.body.fk_user_id;         
+       
         
         const cart=await CartID.save();
     //    Task[TaskDb]=newTask;
