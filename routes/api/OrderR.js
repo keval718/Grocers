@@ -6,11 +6,12 @@ const {
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-let Cart = require("../../models/AddToCartM");
+let Cart = require("../../models/OrdersM");
+let Cart1 = require("../../models/AddToCartM");
 const router = express.Router();
 router.get('/',async(req,res)=>{
     try{
-     //   res.json(tasklist);
+     //   res.json(tasklist); 
      const CartList=await Cart.find();
      console.log(CartList);
      res.json(CartList);
@@ -27,19 +28,8 @@ router.get('/',async(req,res)=>{
 router.get('/:id',async(req,res)=>{
     try{
    //     const task = tasklist.find(t => t.id == req.params.id);
-        const CartID= await Cart.find(req.params.fk_user_id);
-        let pro=Array();
-        for(i=0;i<CartID.length;i++){
-            console.log(CartID[i].pname);
-            const re=new Object({
-                pname: CartID[i].pname,
-            quantity: CartID[i].quantity,
-            amount: CartID[i].amount
-            })
-            pro.push(re);
-            
-         }
-         console.log(pro+",khjvg");
+        const CartID= await Cart.findById(req.params.id);
+     console.log(CartID);
         if(!CartID){
             
         }
@@ -56,7 +46,7 @@ router.get('/:id',async(req,res)=>{
 router.delete('/:id', async(req, res) => {
     try{
         
-        const CartID=await Cart.findById(req.params.fk_user_id);
+        const CartID=await Cart.findById(req.params.id);
         CartID.delete();
        res.json("Deleted");        
 
@@ -77,23 +67,49 @@ async(req, res) => {
         // if (!errors.isEmpty()) {
         //   return res.status(422).json({ errors: errors.array() });
         // }
-      console.log(req.body);
-      let pro=Array();
+     // console.log(req.body);
+    //   let pro=Array();
+    //   const CartID= await Cart.find(req.parm.fk_user_id);
+    //  for(i=0;i<CartID.length;i++){
+    //     console.log(CartID[i].pname);
+    //     const re=new Object({
+    //         pname: CartID[i].pname,
+    //     quantity: CartID[i].quantity,
+    //     amount: CartID[i].amount
+    //     })
+    //     pro.push(re);
+
+    //  }
+    //  const an=pro;
+    //  console.log(an);
+    console.log("a")
       const newCart = new Cart({
         // id: req.body.id,
-        pname: req.body.pname,
-        quantity: req.body.quantity,
-        amount: req.body.amount,
+        // pname: req.body.pname,
+        // quantity: req.body.quantity,
+        // amount: req.body.amount,
+        product:[{
+            pname : req.body.product[0].pname,
+            quantity: req.body.product[0].quantity,
+            amount: req.body.product[0].amount
+        },
+        {
+            pname : req.body.product[1].pname,
+            quantity: req.body.product[1].quantity,
+            amount: req.body.product[1].amount
+        }
+        ],
         fk_store_id: req.body.fk_store_id,
         fk_user_id: req.body.fk_user_id
         
       });
+      console.log(newCart);
       const nCart=await newCart.save();
     //  tasklist.push(newTask);
     console.log(nCart)
       res.send(nCart);
     } catch (err) {
-      res.status(500).send('Server error');
+      res.status(500).send(err);
     }
   });
 
