@@ -7,6 +7,8 @@ const CartRoute=require('./routes/api/AddToCartR');
 const OrderRoute=require('./routes/api/OrderR');
 const ProductRoute=require('./routes/api/ProductR');
 const app=express();
+const cors=require('cors');
+app.use(cors());
 
 app.use(express.json());
 const connectDB=require('./config/connectDB');

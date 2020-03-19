@@ -27,7 +27,7 @@ router.get('/',async(req,res)=>{
 router.get('/:id',async(req,res)=>{
     try{
    //     const task = tasklist.find(t => t.id == req.params.id);
-        const CartID= await Cart.find(req.params.fk_store_id);
+        const CartID= await Cart.findById(req.params.id);
         let pro=Array();
         for(i=0;i<CartID.length;i++){
             console.log(CartID[i].pname);
@@ -108,7 +108,7 @@ async(req, res) => {
         CartID.pname= req.body.pname;
         
         CartID.amount= req.body.amount;
-        CartID.fk_store_id= req.body.fk_store_id;
+      //  CartID.fk_store_id= req.body.fk_store_id;
        
         
         const cart=await CartID.save();
@@ -118,7 +118,7 @@ async(req, res) => {
         res.send(cart);
       }
        catch (err) {
-        res.status(500).send('Server error');
+        res.status(500).send(err);
         console.log(err);
       }
   });
