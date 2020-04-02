@@ -110,31 +110,79 @@ router.post('/addprovider', [
             console.log("fail" + error);     
         }
     })
-// router.post('/Providerlogin', async (req, res) => {
+router.post('/Providerlogin', async (req, res) => {
 
-//     console.log(req.body.email);
-//     //in curly braces beacuse we are checking email field from database
-//     const checkUser = await providerList.findOne({ email: req.body.email });
-//     if (!checkUser) {
-//         return res.send("No User Found");
-//     }
-//     const validpassword = await bcrypt.compare(req.body.password, checkUser.password);
-//     const payload = {
-//         user: {
-//             id: checkUser.id
-//         }
-//     };
-//     if (!validpassword) {
-//         return res.status(400).send("invalid password");
+    console.log(req.body.email);
+    //in curly braces beacuse we are checking email field from database
+    const checkUser = await providerList.findOne({ email: req.body.email });
+    if (!checkUser) {
+        return res.send("No User Found");
+    }
+    const validpassword = await bcrypt.compare(req.body.password, checkUser.password);
+    const payload = {
+        user: {
+            id: checkUser.id
+        }
+    };
+    if (!validpassword) {
+        return res.status(400).send("invalid password");
 
-//     }
+    }
 
-//     else {
+    else {
 
-//         //create and asssign token
-//         const token = jwt.sign(payload, config.get('jwtsecret'));
-//         res.header('auth-token', token).send(token);
-//     }
+        //create and asssign token
+        const token = jwt.sign(payload, config.get('jwtsecret'));
+        res.header('auth-token', token).send(token);
+    }
 
-// });
+});
+
+router.get('/', async (req, res) => {
+    try {
+        //   res.json(tasklist); 
+        const CartList = await providerList.find();
+        console.log(CartList);
+        res.json(CartList);
+
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+
+
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        //     const task = tasklist.find(t => t.id == req.params.id);
+        const CartID = await providerList.findOne(req.params.email);
+        console.log(CartID);
+        if (!CartID) {
+
+        }
+        res.send(CartID);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+
+
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+
+        const CartID = await providerList.findOne(req.params.email);
+        CartID.delete();
+        res.json("Deleted");
+
+    } catch (err) {
+        res.status(500).send('Server error');
+    }
+});
+
+
 module.exports = router;

@@ -27,7 +27,7 @@ router.get('/',async(req,res)=>{
 router.get('/:id',async(req,res)=>{
     try{
    //     const task = tasklist.find(t => t.id == req.params.id);
-        const CartID= await Cart.find(req.params.fk_user_id);
+        const CartID= await Cart.findOne(req.params.fk_user_id);
         let pro=Array();
         for(i=0;i<CartID.length;i++){
             console.log(CartID[i].pname);
