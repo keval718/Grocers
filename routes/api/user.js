@@ -10,7 +10,7 @@ let userList = require("../../models/User");
 const router = express.Router();
 router.post('/adduser', [
     check('password', 'password is required').not().isEmpty(),
-    check('name', 'minimum 12 allowed').isLength({
+    check('name', 'minimum 1 needed').isLength({
         min: 1
     }),
     check('email', 'please enter valid email').isEmail(),
@@ -96,6 +96,16 @@ async (req, res) => {
     } catch (err) {}
 
 });
+router.get('/',async(req,res)=>{
+    try{
+    const user=  await userList.find();
+    res.send(user);
+    }
+    catch(err)
+    {
+        res.send(err);
+    }
+})
 router.post('/login', async (req, res) => {
  
     //in curly braces beacuse we are checking email field from database
@@ -107,7 +117,8 @@ router.post('/login', async (req, res) => {
     const validpassword=await bcrypt.compare(req.body.password,checkUser.password);
     const payload = {
         user: {
-            id: checkUser.id
+            id: checkUser.id,
+            name:checkUser.name
           
         }
     };
@@ -120,8 +131,17 @@ router.post('/login', async (req, res) => {
     else{
        
         //create and asssign token
-        const token= jwt.sign(payload,config.get('jwtsecret'));
-        res.header('auth-token',token).send(token);
+
+        jwt.sign(
+                      payload,
+                      config.get('jwtsecret'),
+                      { expiresIn: 36000 },
+                      (err, token) => {
+                        if (err) throw err;
+                        res.json({ token });
+                      }
+                    );
+                  
     }
     
 
@@ -130,4 +150,56 @@ router.post('/login', async (req, res) => {
     
 
 });
+// router.post(
+//     '/login',
+//     [
+//       check('email', 'Please include valid email').isEmail(),
+//       check('password', 'Password is required').exists()
+//     ],
+//     async (req, res) => {
+//       const errors = validationResult(req);
+//       if (!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//       }
+  
+//       const { email, password } = req.body;
+//       try {
+//         //see if user exists
+//         let user = await userList.findOne({ email });
+//         if (!user) {
+//           return res
+//             .status(400)
+//             .json({ errors: [{ msg: 'invalid credentials' }] });
+//         }
+  
+//         const isMatch = await bcrypt.compare(password, user.password);
+  
+//         if (!isMatch) {
+//           return res
+//             .status(400)
+//             .json({ errors: [{ msg: 'invalid credentials' }] });
+//         }
+//         //get user info for payload from mongo
+//         const payload = {
+//           user: {
+//             id: user.id,
+//             name: user.name
+//           }
+//         };
+  
+//         jwt.sign(
+//           payload,
+//           config.get('jwtsecret'),
+//           { expiresIn: 36000 },
+//           (err, token) => {
+//             if (err) throw err;
+//             res.json({ token });
+//           }
+//         );
+//       } catch (err) {
+//         console.error(err.message);
+//         res.status(500).send('Server error');
+//       }
+//     }
+//   );
 module.exports=router;

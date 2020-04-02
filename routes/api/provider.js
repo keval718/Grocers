@@ -21,7 +21,7 @@ router.post('/addprovider', [
     check('phone', 'phone is required').not().isEmpty(),
     check('OwnerName', 'Owner Name is required').not().isEmpty(),
     check('Open_time', 'Open Time is Required').not().isEmpty(),
-    check('Close_time', 'Close Time is required').not().isEmpty(),
+    // check('Close_time', 'Close Time is required').not().isEmpty(),
     check('postal_code', 'maximum 6 allowed').not().isEmpty().isLength({
         max: 6
     })
@@ -97,7 +97,66 @@ router.post('/addprovider', [
         } catch (err) { }
 
     });
-
+    router.delete('/deleteProvider/:id',async(req,res)=>{
+        try{
+       const provider=  await providerList.findById(req.params.id)
+         provider.delete();
+          res.send("Provider deleted");
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+      });
+    router.get('/display',async(req,res)=>{
+        try{
+         //   res.json(tasklist);
+         const provider=await providerList.find();
+         console.log(provider);
+         res.json(provider);
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).send('Server Error');
+        }
+    
+    
+    });
+    router.get('/display/:id',async(req,res)=>{
+        try{
+         //   res.json(tasklist);
+         const provider=await providerList.findById(req.params.id);
+         console.log(provider);
+         res.json(provider);
+        }
+        catch(err){
+            console.log(err);
+            res.status(500).send('Server Error');
+        }
+    
+    
+    });
+    router.post('/update/:id',async(req,res)=>{
+        providerList.findById(req.params.id)
+          .then(provider => {
+           provider.name= req.body.name,
+           provider.email= req.body.email,
+           provider. password= req.body.password,
+           provider.postal_code= req.body.postal_code,
+           provider.Address= req.body.Address,
+           provider.province= req.body.province,
+           provider.country=req.body.country,
+           provider. phone= req.body.phone,
+           provider. OwnerName= req.body.OwnerName,
+           provider.Open_time= req.body.Open_time,
+           provider.Close_time= req.body.Close_time
+           
+            provider.save()
+              .then(() => res.json('Exercise updated!'))
+              .catch(err => res.status(400).json('Error: ' + err));
+          })
+          .catch(err => res.status(400).json('Error: ' + err));
+      });
     router.post('/Providerlogin', async (req, res) => {
         try {
             const user  = await providerList.checkValidCredentials(req.body.email, req.body.password)
