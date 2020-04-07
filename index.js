@@ -12,6 +12,7 @@ app.use(cors());
 
 app.use(express.json());
 const connectDB=require('./config/connectDB');
+const port = process.env.PORT || 5000;
 
 //connect databse
 connectDB();
@@ -25,5 +26,5 @@ app.use('/api/Providers',provideRoute);
 // app.use('/api/tasks/delete/:email',userRoute);
 // app.use('/api/tasks/update/:email',userRoute);
 
-const PORT=5000;
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+// const PORT=5000;
+app.listen(port, () => console.log(`server running on port ${port}`));
