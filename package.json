@@ -5,21 +5,22 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"npm i && node index.js"
+    "start": "npm i && node index.js"
   },
   "author": "keval",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.2.5",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
+    "forever": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.1",
-    "uuid": "^3.4.0",
-    "cors": "^2.8.5"
+    "uuid": "^3.4.0"
   },
-  "engines":{
-  "node":"12.x"  
-}
+  "engines": {
+    "node": "12.x"
+  }
 }
