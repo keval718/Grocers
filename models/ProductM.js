@@ -13,13 +13,12 @@ const ProductSchema=new mongoose.Schema({
     fk_store_id: {
         type: String,
         required: true
-    }
+    },
+    productImage:{type:String}
+
 
 }
-    // {
-    //     collection: "addtocart"
-    // }
-
+   
 );
 
 const Product = mongoose.model('products', ProductSchema);

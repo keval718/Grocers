@@ -7,6 +7,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 let Cart = require("../../models/ProductM");
+const multer=require('multer');
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  }
+});
+const fileFilter = (req, file, cb) => {
+  // reject a file
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
+
 const router = express.Router();
 router.get('/',async(req,res)=>{
     try{
@@ -65,7 +91,7 @@ router.delete('/:id', async(req, res) => {
     }
 });
 
-router.post('/',
+router.post('/',upload.single('productImage'),
 // [
 //     check('name').not().isEmpty(),
 //     check('desc').isLength({min : 12})
@@ -78,13 +104,14 @@ async(req, res) => {
         //   return res.status(422).json({ errors: errors.array() });
         // }
       console.log(req.body);
+      console.log(req.file);
       let pro=Array();
       const newCart = new Cart({
         // id: req.body.id,
-        pname: req.body.pname,
-        
+        pname: req.body.pname, 
         amount: req.body.amount,
         fk_store_id: req.body.fk_store_id,
+        productImage:req.file.path
         
         
       });
@@ -108,7 +135,7 @@ async(req, res) => {
         CartID.pname= req.body.pname;
         
         CartID.amount= req.body.amount;
-      //  CartID.fk_store_id= req.body.fk_store_id;
+      CartID.fk_store_id= req.body.fk_store_id;
        
         
         const cart=await CartID.save();

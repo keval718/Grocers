@@ -20,7 +20,7 @@ app.use('/api/users',userRoute);
 app.use('/api/cart',CartRoute);
 app.use('/api/orders',OrderRoute);
 app.use('/api/products',ProductRoute);
-
+app.use('/uploads', express.static('uploads'));
 app.use('/api/Providers',provideRoute);
 // app.use('/api/tasks/:email',userRoute);
 // app.use('/api/tasks/delete/:email',userRoute);
