@@ -1,24 +1,20 @@
-const jwt=require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const config = require('config');
-module.exports=function (req,res,next)
-{
-    const token=req.header('x-auth-token');
+module.exports = function (req, res, next) {
+    const token = req.header('x-auth-token');
     console.log(token);
-    if(!token)
-    {
+    if (!token) {
         return res.send("Access denied");
 
     }
-    try{
-console.log("inside");
-        const verified =jwt.verify(token,config.get('jwtsecret'));
+    try {
+        console.log("inside");
+        const verified = jwt.verify(token, config.get('jwtsecret'));
         console.log(verified);
 
-        req.user=verified;
+        req.user = verified;
         next();
-    }
-    catch(err)
-    {
+    } catch (err) {
         res.send(err);
     }
 }
