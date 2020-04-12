@@ -34,7 +34,7 @@ const upload = multer({
 });
 
 const router = express.Router();
-router.get('/', async (req, res) => {
+router.get('/getAllProducts', async (req, res) => {
   try {
 
     const CartList = await Cart.find();
@@ -89,7 +89,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.post('/', upload.single('productImage'),
+router.post('/', 
 
   async (req, res) => {
     try {
@@ -98,11 +98,11 @@ router.post('/', upload.single('productImage'),
       console.log(req.file);
       let pro = Array();
       const newCart = new Cart({
-
-        pname: req.body.pname,
-        amount: req.body.amount,
-        fk_store_id: req.body.fk_store_id,
-        productImage: req.file.path
+        id:req.body.id,
+        name: req.body.name,
+        desc:req.body.desc,
+        price: req.body.price,
+        img: req.body.img
 
 
       });
@@ -115,7 +115,7 @@ router.post('/', upload.single('productImage'),
     }
   });
 
-router.put('/:id', async (req, res) => {
+  router.put('/:id', async (req, res) => {
   try {
 
     let CartID = await Cart.findById(req.params.id);

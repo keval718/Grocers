@@ -59,8 +59,8 @@ router.post('/',
             req.body.product.forEach((p) => new_products.push(p));
             const newCart = new Cart({
                 product: new_products,
-                fk_store_id: req.body.fk_store_id,
-                fk_user_id: req.body.fk_user_id
+                fk_user_id: req.body.fk_user_id,
+                total:req.body.total
             });
 
             console.log(newCart);

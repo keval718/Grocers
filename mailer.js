@@ -17,18 +17,18 @@ module.exports = {
         ]
       });
       const page = await browser.newPage();
-      await page.goto("https://www.google.com/", {
-        waitUntil: "networkidle2"
-      });
+      // await page.goto("http://localhost:3000/addToCart", {
+      //   waitUntil: "networkidle2"
+      // });
    
-      await page.setViewport({ width: 1680, height: 1050 });
-      await page.emulateMedia('screen');
-      await page.pdf({
-        path: "./report.pdf",
-        displayHeaderFooter: true,
-        printBackground: true,
-        format: "A4"
-      });
+      // await page.setViewport({ width: 1680, height: 1050 });
+      // await page.emulateMedia('screen');
+      // await page.pdf({
+      //   path: "./report.pdf",
+      //   displayHeaderFooter: true,
+      //   printBackground: true,
+      //   format: "A4"
+      // });
 
       await browser.close();
 
@@ -45,18 +45,18 @@ module.exports = {
 
       // send mail with defined transport object
       let info = await transporter.sendMail({
-        from: '"SeoAccess 👻" <testscrapper@gmail.com>', // sender address
+        from: '"Grocers 👻" <testscrapper@gmail.com>', // sender address
         to: emailadd, // list of receivers
-        subject: "Report from SeoAccess",
+        subject: "Confirmation  from Grocers",
         text: "testing",
-        html: "<b>Report</b><br/>", //body
-        attachments: [
-          {
-            filename: 'report.pdf',
-            path: path.join(__dirname, 'report.pdf'),
-            contentType: 'application/pdf'
-          }
-        ]
+        html: "<b>You Order Has Been Placed</b><br/>", //body
+        // attachments: [
+        //   {
+        //     filename: 'report.pdf',
+        //     path: path.join(__dirname, 'report.pdf'),
+        //     contentType: 'application/pdf'
+        //   }
+        // ]
       });
     //   console.log("http://localhost:3000/secondPage/" + toEmail + url);
       console.log("Mail delivered", info.messageId);

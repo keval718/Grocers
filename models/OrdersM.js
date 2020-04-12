@@ -1,18 +1,29 @@
 const mongoose = require('mongoose');
 
-const productSchema=new mongoose.Schema({
-    pname: {
-        type: String,
-        required: true
+const sub = new mongoose.Schema({
+    _id: {
+        type: String
     },
-    quantity: {
-        type: String,
-        required: true
+    id:{
+        type:String
     },
-    amount: {
-        type: Number,
-        required: true
-
+    name:{
+        type:String
+    },
+    desc:{
+        type:String
+    },
+    price:{
+        type:Number
+    },
+    img:{
+        type:String
+    },
+    __v:{
+        type:Number
+    },
+    quantity:{
+        type:Number
     }
 });
 
@@ -20,19 +31,20 @@ const OrderSchema = new mongoose.Schema({
 
 
 
-    product: [
-      productSchema
-    ],
-    fk_store_id: {
-        type: String,
-        required: true
-    },
-    fk_user_id: {
-        type: String,
-        required: true
-    }
+        product: [sub],
 
-}
+
+        fk_user_id: {
+            type: String,
+            required: true
+        },
+        total:{
+            type:Number,
+            required:true
+        }
+
+
+    }
     // {
     //     collection: "addtocart"
     // }
