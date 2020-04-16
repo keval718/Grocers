@@ -1,0 +1,4 @@
+{
+    "mongoDBConnectURI" : "mongodb+srv://root:12345@cluster0-0nrua.mongodb.net/grocers?retryWrites=true&w=majority",
+    "jwtsecret":"secret"
+}
